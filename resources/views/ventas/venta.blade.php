@@ -20,6 +20,12 @@
         </a>
     </div>
 
+    @if ($errors->has('inventario'))
+    <div class="alert alert-danger mt-3">
+        {{ $errors->first('inventario') }}
+    </div>
+    @endif
+
     <form action="{{ route('venta.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <h4 class="text-center mt-3">Venta del dia</h4>

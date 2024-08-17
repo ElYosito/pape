@@ -42,6 +42,17 @@ class VentaController extends Controller
             'total' => 'nullable|numeric'
         ]);
 
+        // Verificar que haya suficiente inventario
+        foreach ($validatedData['id_inventario'] as $key => $idInventario) {
+            $cantidadSolicitada = $validatedData['cantidad'][$key];
+            $inventario = Inventario::find($idInventario);
+
+            if ($cantidadSolicitada > $inventario->cantidad_total) {
+                return redirect()->route('venta.create')->withErrors([
+                    'inventario' => "No hay suficiente inventario para el producto: {$inventario->producto->nombre}. Disponible: {$inventario->cantidad_total}, Solicitado: {$cantidadSolicitada}."
+                ]);
+            }
+        }
 
         // Insertar en la tabla ventas
         $venta = new Venta();
@@ -62,6 +73,11 @@ class VentaController extends Controller
             $detalleVenta->precio_unitario = $validatedData['precio_unitario'][$key];
             $detalleVenta->subtotal = $validatedData['subtotal'][$key];
             $detalleVenta->save();
+
+            // Actualizar el inventario
+            $inventario = Inventario::find($idInventario);
+            $inventario->cantidad_total -= $detalleVenta->cantidad;
+            $inventario->save();
         }
 
         return redirect()->route('venta.create')->with('success', 'Compra realizada correctamente');
