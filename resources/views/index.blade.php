@@ -95,7 +95,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-3 justify-content-center" id="cajasContainer">
             @foreach($inventarios as $inventario)
             <div class="col">
-                <div class="card mb-3">
+                <div class="card h-100 shadow-sm">
                     <div class="row g-0">
                         <div class="col-md-4">
                             <img src="img/papeleria.png"

@@ -85,7 +85,14 @@
         <div class="text-center mt-3 d-flex justify-content-between align-items-center">
             <h1 class="text-center mt-4" id="total" name="total">Total: 0.00</h1>
             <input type="hidden" id="total-input" name="total" value="0.00">
-            <button style="height: 50px;" class="btn btn-success" type="submit">Insertar</button>
+
+            <div class="form-floating mt-4">
+                <input type="number" class="form-control subtotal" id="pago" name="pago">
+                <label for="subtotal">Pago con:</label>
+            </div>
+
+            <h1 class="text-center mt-4" id="cambio" name="cambio">Cambio: 0.00</h1>
+            <button style="height: 50px;" class="btn btn-success" type="submit">Vender</button>
         </div>
     </form>
 
@@ -210,5 +217,26 @@
         // Inicializar el total al cargar la página
         updateTotal();
     });
+</script>
+<script>
+    // Obtén los elementos necesarios
+    const totalElement = document.getElementById('total');
+    const totalInput = document.getElementById('total-input');
+    const pagoInput = document.getElementById('pago');
+    const cambioElement = document.getElementById('cambio');
+
+    // Función para calcular el cambio
+    function calcularCambio() {
+        const total = parseFloat(totalInput.value); // Obtén el total como un número
+        const pago = parseFloat(pagoInput.value); // Obtén el pago como un número
+
+        if (!isNaN(total) && !isNaN(pago)) {
+            const cambio = pago - total; // Calcula el cambio
+            cambioElement.innerText = `Cambio: $${cambio.toFixed(2)}`; // Muestra el cambio en el elemento
+        }
+    }
+
+    // Agrega un evento de escucha al campo de pago para que calcule el cambio cada vez que cambie el valor
+    pagoInput.addEventListener('input', calcularCambio);
 </script>
 @endsection
