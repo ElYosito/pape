@@ -54,6 +54,9 @@
                             @foreach($inventarios as $inventario)
                             <option value="{{ $inventario->id_inventario }}" data-precio="{{ $inventario->producto->precio_unitario }}">{{ $inventario->producto->nombre }}</option>
                             @endforeach
+                            <option value="impresion" data-precio="3">Impresión</option> <!-- Ajusta el precio aquí -->
+                            <option value="impresion_color" data-precio="5">Impresión a color</option> <!-- Ajusta el precio aquí -->
+                            <option value="copia" data-precio="1">Copia</option> <!-- Ajusta el precio aquí -->
                         </select>
                     </div>
                     <div class="col">

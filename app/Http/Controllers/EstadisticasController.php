@@ -6,6 +6,7 @@ use App\Models\detalle_venta;
 use App\Models\estadisticas;
 use App\Models\inventario;
 use App\Models\venta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EstadisticasController extends Controller
@@ -15,17 +16,52 @@ class EstadisticasController extends Controller
      */
     public function index()
     {
+        Carbon::setLocale('es');
+
         $inventarios = Inventario::all();
         $detalles = detalle_venta::all();
         $ventas = Venta::all();
 
         // Calcular el total de ventas del día
-        $ventasHoy = Venta::whereDate('fecha', now()->toDateString())
-            ->sum('total');
+        $ventasHoy = Venta::whereDate('fecha', now()->toDateString())->sum('total');
+
+        // Calcular el total de ventas de la semana
+        $ventasSemana = Venta::whereBetween('fecha', [now()->startOfWeek(), now()->endOfWeek()])->sum('total');
+
+        // Calcular el total de ventas del mes
+        $ventasMes = Venta::whereMonth('fecha', now()->month)->sum('total');
+
+        $fechasUnicas = $ventas->unique(function ($venta) {
+            return $venta->fecha;
+        })->map(function ($venta) {
+            return [
+                'id' => $venta->id,
+                'fecha_formateada' => Carbon::parse($venta->fecha)->locale('es')->translatedFormat('l j \\d\\e F \\d\\e\\l Y')
+            ];
+        });
+
+        $mesesUnicos = $ventas->unique(function ($venta) {
+            return Carbon::parse($venta->fecha)->format('Y-m'); // Agrupar por año y mes
+        })->map(function ($venta) {
+            return [
+                'id' => Carbon::parse($venta->fecha)->format('Y-m'), // Usar año-mes como valor
+                'mes_formateado' => Carbon::parse($venta->fecha)->locale('es')->translatedFormat('F \\d\\e Y') // Formatear mes y año en español
+            ];
+        });
+
+        $añosUnicos = $ventas->unique(function ($venta) {
+            return Carbon::parse($venta->fecha)->format('Y'); // Agrupar por año
+        })->map(function ($venta) {
+            return [
+                'id' => Carbon::parse($venta->fecha)->format('Y'), // Usar el año como valor
+                'año_formateado' => Carbon::parse($venta->fecha)->format('Y') // Formatear el año
+            ];
+        });
 
         // Pasar los datos a la vista
-        return view('estadisticas.index', compact('inventarios', 'detalles', 'ventas', 'ventasHoy'));
+        return view('estadisticas.index', compact('inventarios', 'detalles', 'ventas', 'ventasHoy', 'ventasSemana', 'ventasMes', 'fechasUnicas', 'mesesUnicos', 'añosUnicos'));
     }
+
 
     /**
      * Show the form for creating a new resource.

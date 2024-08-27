@@ -80,7 +80,7 @@
 </style>
 
 <div class="contenedor">
-    <div class="d-flex">
+    <div class="d-flex justify-content-between align-items-center">
         <form action="{{ route('inventario.create') }}" method="get" class="me-3">
             <button type="submit" class="btn btn-warning">Agregar inventario</button>
         </form>
@@ -130,7 +130,7 @@
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Precio unitario</th>
-                        <th>Cantidad disponible</th>
+                        <th>Cantidad ingresada</th>
                     </tr>
                 </thead>
                 <tbody>

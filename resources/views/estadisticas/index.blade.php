@@ -15,10 +15,69 @@
 
 <div class="contenedor">
     <h1 class="text-center">Información sobre la venta</h1>
-    <div class="container">
-        <h3>Venta total de hoy: ${{ number_format($ventasHoy, 2) }}</h3>
+    <div class="container d-flex justify-content-between">
+        <h3 class="text-center">Venta del día: <br> ${{ number_format($ventasHoy, 2) }}</h3>
+
+        <h3 class="text-center">Venta de la semana: <br> ${{ number_format($ventasSemana, 2) }}</h3>
+
+        <h3 class="text-center">Venta del mes: <br> ${{ number_format($ventasMes, 2) }}</h3>
     </div>
 
+    <hr>
+
+    <div class="container">
+        <h3>Filtros</h3>
+        <div class="row">
+            <div class="col">
+                <select style="height: 60px;" class="form-select" id="id_producto" name="id_producto">
+                    <option value="" selected>Selecciona un dia</option>
+                    @foreach($fechasUnicas as $fecha)
+                    <option value="{{ $fecha['id'] }}">
+                        {{ $fecha['fecha_formateada'] }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col">
+                <select style="height: 60px;" class="form-select" id="id_producto" name="id_producto">
+                    <option value="" selected>Selecciona un mes</option>
+                    <option value="">Enero</option>
+                    <option value="">Febrero</option>
+                    <option value="">Marzo</option>
+                    <option value="">Abril</option>
+                    <option value="">Mayo</option>
+                    <option value="">Junio</option>
+                    <option value="">Julio</option>
+                    <option value="">Agosto</option>
+                    <option value="">Septiembre</option>
+                    <option value="">Octubre</option>
+                    <option value="">Noviembre</option>
+                    <option value="">Diciembre</option>
+                </select>
+            </div>
+
+            <div class="col">
+                <select style="height: 60px;" class="form-select" id="id_producto" name="id_producto">
+                    <option value="" selected>Selecciona un año</option>
+                    @foreach($añosUnicos as $año)
+                    <option value="{{ $año['id'] }}">
+                        {{ $año['año_formateado'] }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a class="btn btn-danger" href="">Borrar ventas</a>
+
+                <a class="btn btn-success" href="">Generar reporte final de ventas</a>
+            </div>
+
+        </div>
+    </div>
+
+    <hr>
 
     <div class="container mt-4">
         <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center" id="cajasContainer">
