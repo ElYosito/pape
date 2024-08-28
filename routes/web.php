@@ -4,6 +4,7 @@ use App\Http\Controllers\EstadisticasController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,10 @@ Route::post('/venta/store', [VentaController::class, 'store'])->name('venta.stor
 
 //ESTADISTICAS
 Route::get('/estadisticas/index', [EstadisticasController::class, 'index'])->name('estadisticas.index');
+Route::get('/venta/borrar', [EstadisticasController::class, 'destroy'])->name('ventas.destroy');
+
+//REPORTE
+Route::get('/reporte/index', [ReporteController::class, 'index'])->name('reporte.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,4 +34,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

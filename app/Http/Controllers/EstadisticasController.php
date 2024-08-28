@@ -8,6 +8,7 @@ use App\Models\inventario;
 use App\Models\venta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EstadisticasController extends Controller
 {
@@ -32,10 +33,10 @@ class EstadisticasController extends Controller
         $ventasMes = Venta::whereMonth('fecha', now()->month)->sum('total');
 
         $fechasUnicas = $ventas->unique(function ($venta) {
-            return $venta->fecha;
+            return Carbon::parse($venta->fecha)->format('Y-m-d'); // Usar toda la fecha para garantizar la unicidad
         })->map(function ($venta) {
             return [
-                'id' => $venta->id,
+                'id' => Carbon::parse($venta->fecha)->format('d-m-Y'), // Usar día, mes, y año como ID única
                 'fecha_formateada' => Carbon::parse($venta->fecha)->locale('es')->translatedFormat('l j \\d\\e F \\d\\e\\l Y')
             ];
         });
@@ -108,6 +109,9 @@ class EstadisticasController extends Controller
      */
     public function destroy(estadisticas $estadisticas)
     {
-        //
+        DB::table('detalle_ventas')->delete();
+        DB::table('ventas')->delete();
+
+        return redirect()->back()->with('success', 'Todas las ventas han sido borradas correctamente.');
     }
 }

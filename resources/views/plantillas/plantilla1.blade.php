@@ -30,10 +30,7 @@
                             <a class="nav-link fs-5 {{ request()->is('venta/create') ? 'active' : '' }}" href="{{ url('/venta/create') }}"><img class="interfaz" height="50" src="{{ asset('/img/venta.png') }}" alt="">Ventas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link fs-5 {{ request()->is('estadisticas/index') ? 'active' : '' }}" href="{{ url('estadisticas/index') }}"><img class="interfaz" height="50" src="{{asset('/img/vigilancia.png')}}" alt="">Estadisticas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link fs-5 {{ request()->is('/vacaciones/index') || request()->is('/vacaciones/editar/*') || request()->is('/vacaciones/nuevo/*') ? 'active' : '' }}" href="{{ url('/vacaciones/index') }}"><img class="interfaz" height="50" src="{{asset('/img/informacion.png')}}" alt="">Otros</a>
+                            <a class="nav-link fs-5 {{ request()->is('estadisticas/index') | request()->is('reporte/index') ? 'active' : '' }}" href="{{ url('estadisticas/index') }}"><img class="interfaz" height="50" src="{{asset('/img/vigilancia.png')}}" alt="">Estadisticas</a>
                         </li>
                     </ul>
                 </div>
